@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Majestic Colorings of Graphs</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css" type="text/css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1 class="title text-center">Majestic
+        <span style="color:#ff0000;">C</span><span style="color:#ff7f00;">o</span><span style="color:#ffbf00;">l</span><span style="color:#ffff00;">o</span><span style="color:#00ff00;">r</span><span style="color:#00ffff;">i</span><span style="color:#0080ff;">n</span><span style="color:#0000ff;">g</span><span style="color:#8b00ff;">s</span>
+         of Graphs</h1>
+    </header>
+
+    <canvas id="graphCanvas" width="600" height="600"></canvas>
+
+    <div id="userInput">
+      <h6>Vertices</h6>
+      <input type="number" class="input" id="vertices" step="1" min="0" max="200" value="10">
+      <br>
+      <h6>Type</h6>
+      <button type="button" class="input" id="generateSimpleRandomButton">Random</button>
+      <button type="button" class="input" id="generateSimpleMSTButton">MST</button>
+      <button type="button" class="input" id="generateSimpleConnectedButton">Connected</button>
+      <br>
+      <button type="button" class="input" id="generateSimpleCompleteButton">Complete</button>
+      <br>
+      <h6>Coloring</h6>
+      <button type="button" class="input" id="colorEdgesButton">Edges</button>
+      <button type="button" class="input" id="colorVerticesButton">Vertices</button>
+    </div>
+
+  </div>
+</body>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script type="application/javascript" src="js/main.js"></script>
+
+</html>

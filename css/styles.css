@@ -1,0 +1,65 @@
+body {
+  background-color: #dcced7;
+}
+
+.container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.title {
+  font-size: 47px;
+}
+
+#graphCanvas {
+  float: left;
+  background-color: lightblue;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  max-height: 100%;
+  max-width: 100%;
+  display: block;
+  border-color: black;
+  border: 2px solid;
+}
+
+#userInput {
+  float: left;
+  margin-top: 30px;
+  margin-left: 30px;
+  padding: 10px 10px 0px 10px;
+  height: auto;
+  width: 400px;
+  max-height: 100%;
+  max-width: 100%;
+  display: block;
+  border-color: black;
+  border: 2px solid;
+  border-radius: 5px;
+  background-color: lightblue;
+}
+
+/* w3schools */
+
+.input {
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  margin-bottom: 10px;
+  width: 32.6%;
+  max-width: 122px;
+  height: 40px;
+  border: 1px solid;
+  border-color: black;
+}
+
+.input:hover {
+  background-color: #9daff5; /* Green */
+  color: white;
+}
+
+#vertices {
+  text-align: center;
+  padding-left: 12px;
+  border: 2px solid;
+  border-color: blue;
+}
