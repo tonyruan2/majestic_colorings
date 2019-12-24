@@ -219,9 +219,20 @@ function retrieveVertexCount() {
   return vertexCount;
 }
 
+function selectCycleDisplay() {
+  isBaseGraphWheel = false;
+  clearCanvas();
+  drawGraph();
+}
+
+function selectWheelDisplay() {
+  isBaseGraphWheel = true;
+  clearCanvas();
+  drawGraph();
+}
+
 function generateRandomGraph(label = "") {
   clearCanvas();
-  isBaseGraphWheel = false;
   let vertexCount = retrieveVertexCount();
   let minimumEdges = 0;
   let maximumEdges = vertexCount * (vertexCount - 1) / 2;
@@ -252,18 +263,15 @@ function generateRandomGraph(label = "") {
 }
 
 function generateSparseGraph() {
-  isBaseGraphWheel = false;
   generateRandomGraph("sparse");
 }
 
 function generateDenseGraph() {
-  isBaseGraphWheel = false;
   generateRandomGraph("dense");
 }
 
 function generateEdgelessGraph() {
   clearCanvas();
-  isBaseGraphWheel = false;
   let vertexCount = retrieveVertexCount();
   g = new Graph(vertexCount);
   drawGraph();
@@ -271,7 +279,6 @@ function generateEdgelessGraph() {
 
 function generateCycleGraph() {
   clearCanvas();
-  isBaseGraphWheel = false;
   let vertexCount = retrieveVertexCount();
 
   if (vertexCount < 3) {
@@ -289,7 +296,6 @@ function generateCycleGraph() {
 
 function generateWheelGraph() {
   clearCanvas();
-  isBaseGraphWheel = true;
   let vertexCount = retrieveVertexCount();
 
   if (vertexCount < 4) {
@@ -306,12 +312,11 @@ function generateWheelGraph() {
   for (let i = 1; i < g.vertexCount; ++i) {
     g.addEdge(0, i);
   }
-  drawGraph(g, true);
+  drawGraph();
 }
 
 function generateMinimalGraph() {
   clearCanvas();
-  isBaseGraphWheel = false;
   let vertexCount = retrieveVertexCount();
   g = new Graph(vertexCount);
 
@@ -330,7 +335,6 @@ function generateMinimalGraph() {
 
 function generateConnectedGraph() {
   clearCanvas();
-  isBaseGraphWheel = false;
   let vertexCount = retrieveVertexCount();
   g = new Graph(vertexCount);
 
@@ -363,7 +367,6 @@ function generateConnectedGraph() {
 
 function generateCompleteGraph() {
   clearCanvas();
-  isBaseGraphWheel = false;
   let vertexCount = retrieveVertexCount();
   g = new Graph(vertexCount);
 
@@ -403,6 +406,10 @@ window.onload = function() {
   const vertexCount = Math.floor(Math.random() * 8) + 3;
   document.getElementById("vertices").value = vertexCount.toString();
   generateRandomGraph();
+
+
+  document.getElementById("selectCycleLikeButton").addEventListener("click", selectCycleDisplay);
+  document.getElementById("selectWheelLikeButton").addEventListener("click", selectWheelDisplay);
 
   document.getElementById("generateRandomButton").addEventListener("click", generateRandomGraph);
   document.getElementById("generateSparseButton").addEventListener("click", generateSparseGraph);

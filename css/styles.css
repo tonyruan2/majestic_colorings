@@ -9,6 +9,8 @@ body {
 
 .title {
   font-size: 47px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #graphCanvas {
@@ -24,10 +26,11 @@ body {
 }
 
 #userInput {
-  float: left;
+  float: right;
   margin-top: 30px;
-  margin-left: 30px;
-  padding: 10px 10px 0px 10px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px 10px 20px 20px;
   height: auto;
   width: 400px;
   max-height: 100%;
@@ -46,7 +49,7 @@ body {
   transition-duration: 0.4s;
   margin-bottom: 10px;
   width: 32.6%;
-  max-width: 122px;
+  max-width: 116px;
   height: 40px;
   border: 1px solid;
   border-color: black;
