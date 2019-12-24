@@ -23,17 +23,32 @@
     <canvas id="graphCanvas" width="600" height="600"></canvas>
 
     <div id="userInput">
-      <h6>Vertices</h6>
+      <h6>Choose the number of vertices</h6>
       <input type="number" class="input" id="vertices" step="1" min="1" max="100" value="10">
       <br>
-      <h6>Type</h6>
-      <button type="button" class="input" id="generateSimpleRandomButton">Random</button>
-      <button type="button" class="input" id="generateSimpleMSTButton">MST</button>
-      <button type="button" class="input" id="generateSimpleConnectedButton">Connected</button>
+
+      <h6>Generate a base graph</h6>
+      <button type="button" class="input" id="generateRandomButton">Random</button>
+      <button type="button" class="input" id="generateSparseButton">Sparse</button>
+      <button type="button" class="input" id="generateDenseButton">Dense</button>
       <br>
-      <button type="button" class="input" id="generateSimpleCompleteButton">Complete</button>
+
+      <button type="button" class="input" id="generateEdgelessButton">Edgeless</button>
+      <button type="button" class="input" id="generateCycleButton">Cycle</button>
+      <button type="button" class="input" id="generateWheelButton">Wheel</button>
       <br>
-      <h6>Coloring</h6>
+
+      <button type="button" class="input" id="generateMinimalButton">Minimal</button>
+      <button type="button" class="input" id="generateConnectedButton">Connected</button>
+      <button type="button" class="input" id="generateCompleteButton">Complete</button>
+      <br>
+
+      <h6>Add to generated graph</h6>
+      <button type="button" class="input" id="addVertexButton">Vertex</button>
+      <button type="button" class="input" id="addEdgeButton">Edge</button>
+      <br>
+
+      <h6>Color the graph</h6>
       <button type="button" class="input" id="colorEdgeInducedButton">Edge Induced</button>
       <button type="button" class="input" id="colorVerticesButton">Vertices</button>
     </div>
