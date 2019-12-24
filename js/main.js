@@ -1,13 +1,13 @@
 class Graph {
-  constructor(vertexCount = 0) {
+  constructor(vertexCount = 1) {
+    if (vertexCount <= 0) {
+      vertexCount = 1;
+    }
+
     this.vertexCount = vertexCount;
     this.vertexColorMap = new Map();
     this.edgeColorMap = new Map();
-    this.adjMatrix = new Array();
 
-    if (vertexCount <= 0) {
-      return;
-    }
     let adjMatrix = new Array(vertexCount);
     for (let i = 0; i < vertexCount; ++i) {
       adjMatrix[i] = new Array(vertexCount);
@@ -23,10 +23,6 @@ class Graph {
   }
 
   addVertex() {
-    if (this.vertexCount < 0) {
-      return;
-    }
-
     const addedVertex = this.vertexCount;
     ++this.vertexCount;
 
@@ -54,6 +50,9 @@ class Graph {
       return;
     }
     if (vertex2 < 0 || vertex2 >= this.vertexCount) {
+      return;
+    }
+    if (vertex1 == vertex2) {
       return;
     }
 
@@ -127,6 +126,7 @@ function drawVertex(vertex, centerX, centerY, radius, color="white") {
 function drawEdge(beginX, beginY, endX, endY, color="black") {
   context.beginPath();
   context.strokeStyle = color;
+  context.lineWidth = 2;
   context.moveTo(beginX, beginY);
   context.lineTo(endX, endY);
   context.stroke();
@@ -167,8 +167,8 @@ function shuffle(arr) {
 
 function retrieveVertexCount() {
   let vertexCount = $("#vertices").val();
-  if (vertexCount < 0) {
-    vertexCount = 0;
+  if (vertexCount < 1) {
+    vertexCount = 1;
   }
   else if (vertexCount > 100) {
     vertexCount = 100;
@@ -263,16 +263,25 @@ function generateSimpleCompleteGraph() {
 }
 
 
-function colorGraphEdges() {
+function colorGraphEdgeInduced() {
+  clearCanvas();
   for (let key of g.vertexColorMap.keys()) {
     g.vertexColorMap.set(key, "blue");
+  }
+  for (let key of g.edgeColorMap.keys()) {
+    g.edgeColorMap.set(key, colors[Math.floor(Math.random() * colors.length)]);
   }
   drawGraph(g);
 }
 
 function colorGraphVertices() {
+  clearCanvas();
+  for (let key of g.edgeColorMap.keys()) {
+    g.edgeColorMap.set(key, "black");
+  }
+
   for (let key of g.vertexColorMap.keys()) {
-    g.vertexColorMap.set(key, "white");
+    g.vertexColorMap.set(key, colors[Math.floor(Math.random() * colors.length)]);
   }
   drawGraph(g);
 }
@@ -287,6 +296,6 @@ window.onload = function() {
   document.getElementById("generateSimpleCompleteButton").addEventListener("click", generateSimpleCompleteGraph);
   document.getElementById("generateSimpleMSTButton").addEventListener("click", generateSimpleMSTGraph);
 
-  document.getElementById("colorEdgesButton").addEventListener("click", colorGraphEdges);
+  document.getElementById("colorEdgeInducedButton").addEventListener("click", colorGraphEdgeInduced);
   document.getElementById("colorVerticesButton").addEventListener("click", colorGraphVertices);
 }
