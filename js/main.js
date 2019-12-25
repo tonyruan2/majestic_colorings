@@ -3,10 +3,11 @@ const colors = ["#F0F8FF", "#FAEBD7", "#00FFFF", "#7FFFD4", "#F0FFFF", "#F5F5DC"
 
 const canvas = document.getElementById("graphCanvas");
 const context = canvas.getContext("2d");
-const canvas_width = 600;
-const canvas_height = 600;
+const canvasWidth = 600;
+const canvasHeight = 600;
 const margin = 50;
 let isBaseGraphWheel = false;
+let coloringType = "uncolored"; //figure this out to work with addEdgeToGraph, addVertexToGraph
 
 class Graph {
   constructor(vertexCount = 1) {
@@ -84,7 +85,24 @@ class Graph {
   }
 
   assignVertexColors() {
-
+    for (let key of this.vertexColorMap.keys()) {
+      for (let color of colors) {
+        let available = true;
+        for (let i = 0; i < this.vertexCount; ++i) {
+          if (this.adjMatrix[key][i] == 1) {
+            if (color == this.vertexColorMap.get(i.toString())) {
+              available = false;
+              break;
+            }
+          }
+        }
+        if (available) {
+          this.vertexColorMap.set(key, color);
+          console.log(color);
+          break;
+        }
+      }
+    }
   }
 
   assignEdgeInducedColoring() {
@@ -141,14 +159,14 @@ function drawVertex(vertex, centerX, centerY, radius, color="#FFFFFF") {
 function drawEdge(beginX, beginY, endX, endY, color="#000000") {
   context.beginPath();
   context.strokeStyle = color;
-  context.lineWidth = 2;
+  context.lineWidth = 4;
   context.moveTo(beginX, beginY);
   context.lineTo(endX, endY);
   context.stroke();
 }
 
 function drawGraph(graph = g, wheel = isBaseGraphWheel) {
-  let pointPositions = dividePoints(graph.vertexCount, canvas_width, canvas_height, margin, wheel);
+  let pointPositions = dividePoints(graph.vertexCount, canvasWidth, canvasHeight, margin, wheel);
 
   for (let key of graph.edgeColorMap.keys()) {
     let points = key.split("_");
@@ -378,6 +396,16 @@ function generateCompleteGraph() {
   drawGraph();
 }
 
+function colorGraphUncolored() {
+  clearCanvas();
+  for (let key of g.vertexColorMap.keys()) {
+    g.vertexColorMap.set(key, "#FFFFFF");
+  }
+  for (let key of g.edgeColorMap.keys()) {
+    g.edgeColorMap.set(key, "#000000");
+  }
+  drawGraph();
+}
 
 function colorGraphEdgeInduced() {
   clearCanvas();
@@ -395,10 +423,7 @@ function colorGraphVertices() {
   for (let key of g.edgeColorMap.keys()) {
     g.edgeColorMap.set(key, "black");
   }
-
-  for (let key of g.vertexColorMap.keys()) {
-    g.vertexColorMap.set(key, colors[Math.floor(Math.random() * colors.length)]);
-  }
+  g.assignVertexColors();
   drawGraph();
 }
 
@@ -406,10 +431,6 @@ window.onload = function() {
   const vertexCount = Math.floor(Math.random() * 8) + 3;
   document.getElementById("vertices").value = vertexCount.toString();
   generateRandomGraph();
-
-
-  document.getElementById("selectCycleLikeButton").addEventListener("click", selectCycleDisplay);
-  document.getElementById("selectWheelLikeButton").addEventListener("click", selectWheelDisplay);
 
   document.getElementById("generateRandomButton").addEventListener("click", generateRandomGraph);
   document.getElementById("generateSparseButton").addEventListener("click", generateSparseGraph);
@@ -423,9 +444,13 @@ window.onload = function() {
   document.getElementById("generateConnectedButton").addEventListener("click", generateConnectedGraph);
   document.getElementById("generateCompleteButton").addEventListener("click", generateCompleteGraph);
 
+  document.getElementById("selectCycleLikeButton").addEventListener("click", selectCycleDisplay);
+  document.getElementById("selectWheelLikeButton").addEventListener("click", selectWheelDisplay);
+
   document.getElementById("addVertexButton").addEventListener("click", addVertexToGraph);
   document.getElementById("addEdgeButton").addEventListener("click", addEdgeToGraph);
 
+  document.getElementById("colorUncoloredButton").addEventListener("click", colorGraphUncolored);
   document.getElementById("colorEdgeInducedButton").addEventListener("click", colorGraphEdgeInduced);
   document.getElementById("colorVerticesButton").addEventListener("click", colorGraphVertices);
 }
