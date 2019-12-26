@@ -27,10 +27,11 @@ body {
 }
 
 #userInput {
+  background: #fd952d;
   margin-top: 30px;
   margin-left: auto;
   margin-right: auto;
-  padding: 20px 10px 20px 20px;
+  padding: 16px 20px 16px 20px;
   height: auto;
   width: 400px;
   max-height: 100%;
@@ -39,7 +40,13 @@ body {
   border-color: black;
   border: 2px solid;
   border-radius: 5px;
-  background-color: lightblue;
+}
+
+#vertices {
+  text-align: center;
+  padding-left: 12px;
+  border: 2px solid;
+  border-color: blue;
 }
 
 /* w3schools */
@@ -49,20 +56,54 @@ body {
   transition-duration: 0.4s;
   margin-bottom: 10px;
   width: 32.6%;
-  max-width: 116px;
+  max-width: 115px;
   height: 40px;
   border: 1px solid;
   border-color: black;
 }
 
 .input:hover {
-  background-color: #9daff5; /* Green */
+  background-color: #2dbff5;
   color: white;
 }
 
-#vertices {
-  text-align: center;
-  padding-left: 12px;
-  border: 2px solid;
-  border-color: blue;
+.active {
+  border: 3px solid;
+}
+
+#increaseVertexCountButton {
+  background-color: #1ABC9C;
+}
+
+#increaseVertexCountButton:hover {
+  background-color: #48C9B0;
+}
+
+#sameVertexCountButton {
+  background-color: #D7DBDD;
+}
+
+#sameVertexCountButton:hover {
+  background-color: #E5E7E9;
+  color: black;
+}
+
+#decreaseVertexCountButton {
+  background-color: #D35400;
+}
+
+#decreaseVertexCountButton:hover {
+  background-color: #DC7633;
+}
+
+#increaseVertexCountButton, #sameVertexCountButton, #decreaseVertexCountButton {
+  width: 21.1%;
+  max-width: 90px;
+}
+
+#selectCycleLikeButton, #selectWheelLikeButton, #addVertexButton,
+#addEdgeButton, #colorUncoloredButton, #colorEdgeInducedButton,
+#colorGreedyButton, #colorMinimumButton {
+  width: 49.1%;
+  max-width: 175px;
 }
