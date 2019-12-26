@@ -109,8 +109,10 @@ class Graph {
  * Global variables used in drawing and displaying the graph.
  */
 
-// const colors = ["red", "blue", "orange", "yellow", "green", "indigo", "violet"];
-const colors = ["#F0F8FF", "#FAEBD7", "#00FFFF", "#7FFFD4", "#F0FFFF", "#F5F5DC", "#FFE4C4", "#FFEBCD", "#0000FF", "#8A2BE2", "#A52A2A", "#DEB887", "#5F9EA0", "#7FFF00", "#D2691E", "#FF7F50", "#6495ED", "#FFF8DC", "#DC143C", "#00FFFF", "#00008B", "#008B8B", "#B8860B", "#A9A9A9", "#A9A9A9", "#006400", "#BDB76B", "#8B008B", "#556B2F", "#FF8C00", "#9932CC", "#8B0000", "#E9967A", "#8FBC8F", "#483D8B", "#2F4F4F", "#2F4F4F", "#00CED1", "#9400D3", "#FF1493", "#00BFFF", "#696969", "#696969", "#1E90FF", "#B22222", "#FFFAF0", "#228B22", "#FF00FF", "#DCDCDC", "#F8F8FF", "#FFD700", "#DAA520", "#808080", "#808080", "#008000", "#ADFF2F", "#F0FFF0", "#FF69B4", "#CD5C5C", "#4B0082", "#FFFFF0", "#F0E68C", "#E6E6FA", "#FFF0F5", "#7CFC00", "#FFFACD", "#ADD8E6", "#F08080", "#E0FFFF", "#FAFAD2", "#D3D3D3", "#D3D3D3", "#90EE90", "#FFB6C1", "#FFA07A", "#20B2AA", "#87CEFA", "#778899", "#778899", "#B0C4DE", "#FFFFE0", "#00FF00", "#32CD32", "#FAF0E6", "#FF00FF", "#800000", "#66CDAA", "#0000CD", "#BA55D3", "#9370DB", "#3CB371", "#7B68EE", "#00FA9A", "#48D1CC", "#C71585", "#191970", "#F5FFFA", "#FFE4E1", "#FFE4B5", "#FFDEAD", "#000080", "#FDF5E6", "#808000", "#6B8E23", "#FFA500", "#FF4500", "#DA70D6", "#EEE8AA", "#98FB98", "#AFEEEE", "#DB7093", "#FFEFD5", "#FFDAB9", "#CD853F", "#FFC0CB", "#DDA0DD", "#B0E0E6", "#800080", "#663399", "#FF0000", "#BC8F8F", "#4169E1", "#8B4513", "#FA8072", "#F4A460", "#2E8B57", "#FFF5EE", "#A0522D", "#C0C0C0", "#87CEEB", "#6A5ACD", "#708090", "#708090", "#FFFAFA", "#00FF7F", "#4682B4", "#D2B48C", "#008080", "#D8BFD8", "#FF6347", "#40E0D0", "#EE82EE", "#F5DEB3", "#FFFF00", "#9ACD32"];
+
+// first line of colors: gray, red, yellow, blue, lime, fushcia, purple, silver, maroon, green, aqua, teal, navy, olive
+const colors = ["#808080", "#FF0000", "#FFFF00", "#0000FF", "#00FF00", "#FF00FF", "#800080", "#C0C0C0", "#800000", "#008000", "#00FFFF", "#008080", "#000080", "#808000",
+"#FF7F50", "#CA226B", "#8467D7", "#7D0552", "#FFA62F", "#348781", "#0000A0", "#8EEBEC", "#810541", "#F7E7CE", "#E67451", "#C24641", "#B4CFEC", "#7FFFD4", "#5EFB6E", "#87F717", "#E38AAE", "#C3FDB8", "#B6B6B4", "#565051", "#FBBBB9", "#842DCE", "#15317E", "#C12869", "#4B0082", "#728C00", "#43C6DB", "#C8B560", "#D462FF", "#9CB071", "#ECE5B6", "#FFDB58", "#6CC417", "#306754", "#F75D59", "#41A317", "#C8A2C8", "#E41B17", "#848482", "#C34A2C", "#7F4E52", "#736F6E", "#FFE87C", "#616D7E", "#B38481", "#FDD017", "#FFDFDD", "#FFE5B4", "#A74AC7", "#FCDFFF", "#342D7E", "#98AFC7", "#DEB887", "#2B60DE", "#FFF380", "#F88017", "#954535", "#FFD801", "#FBB917", "#8C001A", "#E55B3C", "#C19A6B", "#D2B9D3", "#463E3F", "#D1D0CE", "#C11B17", "#4E8975", "#FFF5EE", "#CD7F32", "#CFECEC", "#6CBB3C", "#348017", "#667C26", "#78C7C7", "#6C2DC7", "#FC6C85", "#FFF8C6", "#E3E4FA", "#DC381F", "#7E3817", "#C36241", "#3BB9FF", "#C58917", "#5C5858", "#E56E94", "#4CC417", "#CC6600", "#B041FF", "#CCFFFF", "#F2BB66", "#56A5EC", "#FAAFBA", "#EBDDE2", "#B1FB17", "#B7CEEC", "#566D7E", "#2B3856", "#F5F5DC", "#786D5F", "#827B60", "#C48189", "#E18B6B", "#9172EC", "#43BFC7", "#FDD7E4", "#87AFC7", "#9DC209", "#E66C2C", "#C68E17", "#4C4646", "#827839", "#3B3131", "#46C7C7", "#AF7817", "#EDE275", "#E799A3", "#3D3C3A", "#D16587", "#CCFB5D", "#C38EC7", "#3EA99F", "#5CB3FF", "#646D7E", "#8A4117", "#7F38EC", "#C88141", "#AF9B60", "#1F45FC", "#E0FFFF", "#C12267", "#93FFE8", "#FF2400", "#7BCCB5", "#F0FFFF", "#9F000F", "#E9AB17", "#FF8040", "#8E35EF", "#C2DFFF", "#F535AA", "#0041C2", "#E6A9EC", "#F9A7B0", "#82CAFF", "#614051", "#571B7E", "#F6358A", "#FAAFBE", "#C45AEC", "#C04000", "#A23BEC", "#EDDA74", "#F778A1", "#C35817", "#347C2C", "#FBB117", "#6D6968", "#F70D1A", "#6D7B8D", "#3B9C9C", "#9AFEFF", "#893BFF", "#990012", "#357EC7", "#493D26", "#F52887", "#EE9A4D", "#FAEBD7", "#F433FF", "#E9CFEC", "#D4A017", "#ADA96E", "#38ACEC", "#583759", "#4AA02C", "#E4287C", "#307D7E", "#2B547E", "#1589FF", "#FFEBCD", "#77BFC7", "#2B65EC", "#5E5A80", "#4863A0", "#4E9258", "#52D017", "#736AFF", "#8D38C9", "#7DFDFE", "#7FE817", "#E238EC", "#A0CFEC", "#BDEDFF", "#7F462C", "#6AFB92", "#E8ADAA", "#6AA121", "#E8A317", "#368BC1", "#7F5A58", "#E45E9D", "#151B54", "#C7A317", "#7D0541", "#C9BE62", "#306EFF", "#848b79", "#4E387E", "#151B8D", "#F62817", "#2554C7", "#ECC5C0", "#BCC6CC", "#C2B280", "#FFFFCC", "#625D5D", "#413839", "#F3E5AB", "#F660AB", "#B5A642", "#806517", "#9E7BFF", "#50EBEC", "#6698FF", "#347235", "#EDC9AF", "#7F525D", "#F9966B", "#387C44", "#8BB381", "#C48793", "#79BAEC", "#3090C7", "#FFCBA4", "#726E6D", "#92C7C7", "#B87333", "#82CAFA", "#F87431", "#B048B5", "#666362", "#657383", "#254117", "#6495ED", "#E78A61", "#F0F8FF", "#617C58", "#7E354D", "#B5EAAA", "#C25283", "#461B7E", "#F88158", "#5FFB17", "#E56717", "#7E3517", "#157DEC", "#AFDCEC", "#E2A76F", "#E7A1B0", "#F87217", "#438D80", "#98FF98", "#54C571", "#7F5217", "#89C35C", "#4EE2EC", "#488AC7", "#483C32", "#4CC552", "#95B9C7", "#E55451", "#737CA1", "#6F4E37", "#99C68E", "#7D1B7E", "#A1C935", "#1569C7", "#FBF6D9", "#6960EC", "#48CCCD", "#E5E4E2", "#B2C248", "#EAC117", "#728FCE", "#C25A7C", "#0020C2", "#25383C", "#4C787E", "#34282C", "#EBF4FA", "#504A4B", "#57E964", "#C47451", "#85BB65", "#F62217", "#C12283", "#C6DEFF", "#3EA055", "#659EC7", "#78866B", "#800517", "#E3319D", "#ADDFFF", "#64E986", "#B93B8F", "#7A5DC7", "#FDEEF4", "#FFFFC2", "#C6AEC7", "#BCE954", "#C5908E", "#5E7D7E", "#59E817", "#8AFB17", "#E42217", "#437C17", "#57FEFF", "#81D8D0", "#FFF8DC", "#966F33", "#E77471", "#837E7C", "#6A287E", "#835C3B", "#C85A17", "#7E587E", "#E0B0FF", "#347C17", "#F9B7FF"];
 
 const canvas = document.getElementById("graphCanvas");
 const context = canvas.getContext("2d");
@@ -442,6 +444,12 @@ function generateWheelGraph() {
 function generateMinimalGraph() {
   clearCanvas();
   let vertexCount = retrieveVertexCount();
+
+  if (vertexCount < 2) {
+    vertexCount = 2;
+    document.getElementById("vertices").value = vertexCount.toString();
+  }
+
   g = new Graph(vertexCount);
 
   let arr = [];
@@ -460,6 +468,12 @@ function generateMinimalGraph() {
 function generateConnectedGraph() {
   clearCanvas();
   let vertexCount = retrieveVertexCount();
+
+  if (vertexCount < 2) {
+    vertexCount = 2;
+    document.getElementById("vertices").value = vertexCount.toString();
+  }
+
   g = new Graph(vertexCount);
 
   let arr = [];
@@ -492,6 +506,12 @@ function generateConnectedGraph() {
 function generateCompleteGraph() {
   clearCanvas();
   let vertexCount = retrieveVertexCount();
+
+  if (vertexCount < 2) {
+    vertexCount = 2;
+    document.getElementById("vertices").value = vertexCount.toString();
+  }
+  
   g = new Graph(vertexCount);
 
   for (let i = 0; i < g.vertexCount; ++i) {
