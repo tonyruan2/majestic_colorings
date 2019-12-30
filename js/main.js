@@ -68,6 +68,36 @@ class Graph {
     this.edgeColorMap.set(arr.join('_'), "#000000");
   }
 
+  incidentUncoloredVertices(vertex) {
+    let arr = [];
+    if (vertex < 0 || vertex >= this.vertexCount) {
+      return arr;
+    }
+    for (let i = 0; i < this.vertexCount; ++i) {
+      if (i != vertex && this.adjMatrix[vertex][i] == 1) {
+        if (this.vertexColorMap.get(i.toString()) == "#FFFFFF") {
+          arr.push(i);
+        }
+      }
+    }
+    return arr;
+  }
+
+  incidentColoredVertices(vertex) {
+    let arr = [];
+    if (vertex < 0 || vertex >= this.vertexCount) {
+      return arr;
+    }
+    for (let i = 0; i < this.vertexCount; ++i) {
+      if (i != vertex && this.adjMatrix[vertex][i] == 1) {
+        if (this.vertexColorMap.get(i.toString()) != "#FFFFFF") {
+          arr.push(i);
+        }
+      }
+    }
+    return arr;
+  }
+
   assignUncoloredColoring() {
     for (let key of this.vertexColorMap.keys()) {
       this.vertexColorMap.set(key, "#FFFFFF");
@@ -91,12 +121,12 @@ class Graph {
   }
 
   assignGreedyColoring() {
-    let used_colors = new Set();
+    this.assignUncoloredColoring();
     for (let key of this.vertexColorMap.keys()) {
       for (let color of colors) {
         let available = true;
         for (let i = 0; i < this.vertexCount; ++i) {
-          if (this.adjMatrix[key][i] == 1) {
+          if (i != key && this.adjMatrix[key][i] == 1) {
             if (color == this.vertexColorMap.get(i.toString())) {
               available = false;
               break;
@@ -105,17 +135,63 @@ class Graph {
         }
         if (available) {
           this.vertexColorMap.set(key, color);
-          used_colors.add(color);
           break;
         }
       }
     }
-    console.log("Color count: " + used_colors.size);
   }
 
   assignMinimumColoring() {
-
+    this.assignUncoloredColoring();
+    for (let key of this.vertexColorMap.keys()) {
+      if (this.vertexColorMap.get(key) == "#FFFFFF") {
+        let colorCount = 1;
+        while (true) {
+          let isColorable = this.assignMinimumColoring_helper(Number(key), colorCount);
+          if (!isColorable) {
+            if (colorCount == 7) {
+              return;
+            }
+            ++colorCount;
+          }
+          else {
+            break;
+          }
+        }
+      }
+    }
   }
+
+  assignMinimumColoring_helper(key_index, colorCount) {
+    let incidentColoredVertices = this.incidentColoredVertices(key_index);
+    for (let i = 0; i < colorCount; ++i) {
+      let available = true;
+      let color = colors[i];
+
+      for (let i = 0; i < incidentColoredVertices.length; ++i) {
+        if (color == this.vertexColorMap.get(incidentColoredVertices[i].toString())) {
+          available = false;
+          break;
+        }
+      }
+
+      if (available) {
+        this.vertexColorMap.set(key_index.toString(), color);
+        let incidentUncoloredVertices = this.incidentUncoloredVertices(key_index);
+        if (incidentUncoloredVertices.length == 0) {
+          return true;
+        }
+        for (let i = 0; i < incidentUncoloredVertices.length; ++i) {
+          if (this.assignMinimumColoring_helper(incidentUncoloredVertices[i], colorCount)) {
+            return true;
+          }
+        }
+        this.vertexColorMap.set(key_index.toString(), "#FFFFFF");
+      }
+    }
+    return false;
+  }
+
 }
 
 /*
@@ -136,6 +212,38 @@ let isBaseGraphWheel = false;
 let coloringType = "uncolored"; //figure this out to work with addEdgeToGraph, addVertexToGraph
 let g = new Graph();
 
+/*
+ * Function used to print graph information to the console.
+ */
+
+function logGraphInformation() {
+   console.log("\n_________________");
+   console.log("Graph information\n");
+   let activeButtons = document.getElementById("colorOptions").getElementsByClassName("active");
+   let coloringOption = activeButtons[0].id.replace("color", "").replace("Button", "");
+   console.log("Coloring option: " + coloringOption);
+   let usedColors = new Set();
+   for (let value of g.vertexColorMap.values()) {
+     usedColors.add(value);
+   }
+   console.log("Colors used: " + usedColors.size.toString());
+
+   console.log("\n[Key, color]");
+   for (let [key, color] of g.vertexColorMap.entries()) {
+     console.log(key + ": " + color);
+   }
+
+   console.log("\n[Key, adjacent vertices]");
+   for (let i = 0; i < g.vertexCount; ++i) {
+     let adjacentMessage = i.toString() + ":";
+     for (let j = 0; j < g.vertexCount; ++j) {
+       if (i != j && g.adjMatrix[i][j] == 1) {
+         adjacentMessage += (" " + j.toString());
+       }
+     }
+     console.log(adjacentMessage);
+   }
+}
 
 /*
  * Functions used to draw the graph.
@@ -212,6 +320,7 @@ function drawGraph(graph = g, wheel = isBaseGraphWheel) {
   for (let key of graph.vertexColorMap.keys()) {
     drawVertex(key, pointPositions[2 * key], pointPositions[2 * key + 1], 20, graph.vertexColorMap.get(key));
   }
+  logGraphInformation();
 }
 
 function clearCanvas() {
