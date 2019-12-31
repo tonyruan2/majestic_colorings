@@ -2,6 +2,8 @@
  * Graph class that keeps track of the coloring of its vertices and edges.
  */
 
+let globalCallCount = 0;
+
 class Graph {
   constructor(vertexCount = 1) {
     if (vertexCount <= 0) {
@@ -107,63 +109,18 @@ class Graph {
     }
   }
 
-  assignEdgeColors() {
-    let arr = shuffle(colors);
-    for (let i = 0; i < g.vertexCount; ++i) {
-      for (let j = 0; j < g.vertexCount; ++j) {
-
-      }
-    }
-  }
-
   assignEdgeInducedColoring() {
-
-  }
-
-  assignGreedyColoring() {
-    this.assignUncoloredColoring();
-    for (let key of this.vertexColorMap.keys()) {
-      for (let color of colors) {
-        let available = true;
-        for (let i = 0; i < this.vertexCount; ++i) {
-          if (i != key && this.adjMatrix[key][i] == 1) {
-            if (color == this.vertexColorMap.get(i.toString())) {
-              available = false;
-              break;
-            }
-          }
-        }
-        if (available) {
-          this.vertexColorMap.set(key, color);
-          break;
-        }
-      }
+    g.assignUncoloredColoring();
+    for (let key of g.vertexColorMap.keys()) {
+      g.vertexColorMap.set(key, "blue");
+    }
+    for (let key of g.edgeColorMap.keys()) {
+      g.edgeColorMap.set(key, colors[Math.floor(Math.random() * colors.length)]);
     }
   }
 
-  assignMinimumColoring() {
-    this.assignUncoloredColoring();
-    for (let key of this.vertexColorMap.keys()) {
-      if (this.vertexColorMap.get(key) == "#FFFFFF") {
-        let colorCount = 1;
-        while (true) {
-          let isColorable = this.assignMinimumColoring_helper(Number(key), colorCount);
-          if (!isColorable) {
-            if (colorCount == 7) {
-              return;
-            }
-            ++colorCount;
-          }
-          else {
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  assignMinimumColoring_helper(key_index, colorCount) {
-    let incidentColoredVertices = this.incidentColoredVertices(key_index);
+  nextAvailableColor(keyIndex, colorCount) {
+    let incidentColoredVertices = this.incidentColoredVertices(keyIndex);
     for (let i = 0; i < colorCount; ++i) {
       let available = true;
       let color = colors[i];
@@ -176,24 +133,92 @@ class Graph {
       }
 
       if (available) {
-        this.vertexColorMap.set(key_index.toString(), color);
-        let incidentUncoloredVertices = this.incidentUncoloredVertices(key_index);
-        if (incidentUncoloredVertices.length == 0) {
-          return true;
-        }
-        for (let i = 0; i < incidentUncoloredVertices.length; ++i) {
-          if (this.assignMinimumColoring_helper(incidentUncoloredVertices[i], colorCount)) {
+        return color;
+      }
+    }
+    return "#FFFFFF";
+  }
+
+  assignGreedyColoring() {
+    this.assignUncoloredColoring();
+    for (let key of this.vertexColorMap.keys()) {
+      let color = this.nextAvailableColor(Number(key), this.vertexCount);
+      if (color == "#FFFFFF") {
+        return;
+      }
+      console.log("Set " + key + " to " + color);
+      this.vertexColorMap.set(key, color);
+    }
+  }
+
+  assignMinimumColoring() {
+    this.assignUncoloredColoring();
+    let edgeCount = this.edgeColorMap.size;
+    if (edgeCount == 0) {
+      this.assignMinimumColoring_helper(0, 1);
+      return;
+    }
+    else if (edgeCount == this.vertexCount * (this.vertexCount - 1) / 2) {
+      this.assignMinimumColoring_helper(0, this.vertexCount);
+      return;
+    }
+
+    globalCallCount = 0;
+    let colorCount = this.vertexCount - 1;
+    let minColorCount = colorCount;
+
+    while(true) {
+      console.log("\nLoop");
+      if (this.assignMinimumColoring_helper(0, colorCount)) {
+        --colorCount;
+      }
+      else {
+        minColorCount = colorCount + 1;
+        break;
+      }
+    }
+    this.assignMinimumColoring_helper(0, minColorCount);
+    console.log("Global call count: " + globalCallCount.toString());
+  }
+
+  isColorAvailable(keyIndex, color) {
+    let incidentColoredVertices = this.incidentColoredVertices(keyIndex);
+    for (let i = 0; i < incidentColoredVertices.length; ++i) {
+      if (color == this.vertexColorMap.get(incidentColoredVertices[i].toString())) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  assignMinimumColoring_helper(keyIndex, colorCount) {
+    ++globalCallCount;
+    if (colorCount <= 0) {
+      return false;
+    }
+
+    for (let i = 0; i < colorCount; ++i) {
+//      console.log("Inner loop");
+      let color = colors[i];
+      if (this.isColorAvailable(keyIndex, color)) {
+//        console.log("[SET] " + keyIndex.toString() + " to " + color);
+        this.vertexColorMap.set(keyIndex.toString(), color);
+        if (keyIndex + 1 < this.vertexCount) {
+          if(this.assignMinimumColoring_helper(keyIndex + 1, colorCount)) {
             return true;
           }
         }
-        this.vertexColorMap.set(key_index.toString(), "#FFFFFF");
+        else {
+          return true;
+        }
+//        console.log("[RESET] " + keyIndex.toString() + " to " + "UNCOLORED");
+        this.vertexColorMap.set(keyIndex.toString(), "#FFFFFF");
       }
     }
     return false;
   }
 
 }
-
 /*
  * Global variables used in drawing and displaying the graph.
  */
@@ -209,7 +234,6 @@ const canvasWidth = 600;
 const canvasHeight = 600;
 const margin = 50;
 let isBaseGraphWheel = false;
-let coloringType = "uncolored"; //figure this out to work with addEdgeToGraph, addVertexToGraph
 let g = new Graph();
 
 /*
@@ -228,6 +252,7 @@ function logGraphInformation() {
    }
    console.log("Colors used: " + usedColors.size.toString());
 
+   /*
    console.log("\n[Key, color]");
    for (let [key, color] of g.vertexColorMap.entries()) {
      console.log(key + ": " + color);
@@ -243,6 +268,7 @@ function logGraphInformation() {
      }
      console.log(adjacentMessage);
    }
+   */
 }
 
 /*
@@ -331,68 +357,25 @@ function clearCanvas() {
  * Functions used to color the graph.
  */
 
-function colorGraphUncolored_action() {
-  g.assignUncoloredColoring();
-}
-
-function colorGraphUncolored() {
-  clearCanvas();
-  colorGraphUncolored_action();
-  drawGraph();
-}
-
-function colorGraphEdgeInduced_action() {
-  g.assignUncoloredColoring();
-  for (let key of g.vertexColorMap.keys()) {
-    g.vertexColorMap.set(key, "blue");
-  }
-  for (let key of g.edgeColorMap.keys()) {
-    g.edgeColorMap.set(key, colors[Math.floor(Math.random() * colors.length)]);
-  }
-}
-
-function colorGraphEdgeInduced() {
-  clearCanvas();
-  colorGraphEdgeInduced_action();
-  drawGraph();
-}
-
-function colorGraphGreedy_action() {
-  g.assignUncoloredColoring();
-  g.assignGreedyColoring();
-}
-
-function colorGraphGreedy() {
-  clearCanvas();
-  colorGraphGreedy_action();
-  drawGraph();
-}
-
-function colorGraphMinimum_action() {
-  g.assignUncoloredColoring();
-  g.assignMinimumColoring();
-}
-
-function colorGraphMinimum() {
-  clearCanvas();
-  colorGraphMinimum_action();
-  drawGraph();
-}
+ function colorGraph() {
+   clearCanvas();
+   drawGraph();
+ }
 
 function applyColoringOption() {
   let activeButtons = document.getElementById("colorOptions").getElementsByClassName("active");
   let id = activeButtons[0].id;
   if (id == "colorUncoloredButton") {
-    colorGraphUncolored_action();
+    g.assignUncoloredColoring();
   }
   else if (id == "colorEdgeInducedButton") {
-    colorGraphEdgeInduced_action();
+    g.assignEdgeInducedColoring();
   }
   else if (id == "colorGreedyButton") {
-    colorGraphGreedy_action();
+    g.assignGreedyColoring();
   }
   else if (id == "colorMinimumButton") {
-    colorGraphMinimum_action();
+    g.assignMinimumColoring();
   }
 }
 
@@ -704,11 +687,8 @@ window.onload = function() {
    */
 
   document.getElementById("vertices").addEventListener("change", function() {
-    let activeButtons = document.getElementById("userInput").getElementsByClassName("active");
-    for (let i = 0; i < activeButtons.length; ++i) {
-      console.log(activeButtons[i].id);
-      document.getElementById(activeButtons[i].id).click();
-    }
+    let activeButtons = document.getElementById("generateOptions").getElementsByClassName("active");
+    document.getElementById(activeButtons[0].id).click();
   })
 
   /*
@@ -737,9 +717,9 @@ window.onload = function() {
   document.getElementById("addVertexButton").addEventListener("click", addVertexToGraph);
   document.getElementById("addEdgeButton").addEventListener("click", addEdgeToGraph);
 
-  document.getElementById("colorUncoloredButton").addEventListener("click", colorGraphUncolored);
-  document.getElementById("colorEdgeInducedButton").addEventListener("click", colorGraphEdgeInduced);
+  document.getElementById("colorUncoloredButton").addEventListener("click", colorGraph);
+  document.getElementById("colorEdgeInducedButton").addEventListener("click", colorGraph);
 
-  document.getElementById("colorGreedyButton").addEventListener("click", colorGraphGreedy);
-  document.getElementById("colorMinimumButton").addEventListener("click", colorGraphMinimum);
+  document.getElementById("colorGreedyButton").addEventListener("click", colorGraph);
+  document.getElementById("colorMinimumButton").addEventListener("click", colorGraph);
 }
