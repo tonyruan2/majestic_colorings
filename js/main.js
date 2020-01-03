@@ -161,7 +161,7 @@ class Graph {
       if (color == "#FFFFFF") {
         return;
       }
-      console.log("Set " + key + " to " + color);
+//      console.log("Set " + key + " to " + color);
       this.vertexColorMap.set(key, color);
     }
   }
@@ -176,13 +176,6 @@ class Graph {
       return true;
     }
 
-    // min span
-    if (edgeCount == this.vertexCount - 1) {
-      this.assignMinimumColoring_helper(0, 2);
-      evaluateMinColorRuntime();
-      return true;
-    }
-
     // complete
     let maximumEdges = this.vertexCount * (this.vertexCount - 1) / 2;
     if (edgeCount == maximumEdges) {
@@ -190,7 +183,6 @@ class Graph {
       evaluateMinColorRuntime();
       return true;
     }
-
     return false;
   }
 
