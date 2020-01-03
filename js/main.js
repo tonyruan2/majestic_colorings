@@ -1,8 +1,23 @@
+
+// Limit the maximum amount of recursive calls for
+// the exponential runtime minimum coloring algorithm (NP-complete).
+// Switch to greedy coloring if runtime exceeds limiter.
+// This prevents webpage from becoming unresponsive.
+
+let recursiveCallCount = 0;
+const recursiveLimiter = 250000;
+
+function evaluateMinColorRuntime() {
+  if (recursiveCallCount >= recursiveLimiter) {
+    document.getElementById("colorGreedyButton").click();
+    return false;
+  }
+  return true;
+}
+
 /*
  * Graph class that keeps track of the coloring of its vertices and edges.
  */
-
-let globalCallCount = 0;
 
 class Graph {
   constructor(vertexCount = 1) {
@@ -151,25 +166,54 @@ class Graph {
     }
   }
 
-  assignMinimumColoring() {
-    this.assignUncoloredColoring();
+  preliminaryMinAssignments() {
     let edgeCount = this.edgeColorMap.size;
+
+    // edgeless
     if (edgeCount == 0) {
       this.assignMinimumColoring_helper(0, 1);
-      return;
+      evaluateMinColorRuntime();
+      return true;
     }
-    else if (edgeCount == this.vertexCount * (this.vertexCount - 1) / 2) {
+
+    // min span
+    if (edgeCount == this.vertexCount - 1) {
+      this.assignMinimumColoring_helper(0, 2);
+      evaluateMinColorRuntime();
+      return true;
+    }
+
+    // complete
+    let maximumEdges = this.vertexCount * (this.vertexCount - 1) / 2;
+    if (edgeCount == maximumEdges) {
       this.assignMinimumColoring_helper(0, this.vertexCount);
+      evaluateMinColorRuntime();
+      return true;
+    }
+
+    return false;
+  }
+
+  assignMinimumColoring() {
+    recursiveCallCount = 0;
+    this.assignUncoloredColoring();
+
+    if (this.preliminaryMinAssignments()) {
       return;
     }
 
-    globalCallCount = 0;
+    let edgeCount = this.edgeColorMap.size;
     let colorCount = this.vertexCount - 1;
-    let minColorCount = colorCount;
+    let minColorCount = 0;
 
     while(true) {
-      console.log("\nLoop");
-      if (this.assignMinimumColoring_helper(0, colorCount)) {
+      let canColor = this.assignMinimumColoring_helper(0, colorCount);
+      if (!evaluateMinColorRuntime()) {
+        return;
+      }
+
+      if (canColor) {
+        this.assignUncoloredColoring();
         --colorCount;
       }
       else {
@@ -178,7 +222,7 @@ class Graph {
       }
     }
     this.assignMinimumColoring_helper(0, minColorCount);
-    console.log("Global call count: " + globalCallCount.toString());
+    evaluateMinColorRuntime();
   }
 
   isColorAvailable(keyIndex, color) {
@@ -192,13 +236,12 @@ class Graph {
   }
 
   assignMinimumColoring_helper(keyIndex, colorCount) {
-    ++globalCallCount;
-    if (colorCount <= 0) {
+    ++recursiveCallCount;
+    if (colorCount <= 0 || recursiveCallCount >= recursiveLimiter) {
       return false;
     }
 
     for (let i = 0; i < colorCount; ++i) {
-//      console.log("Inner loop");
       let color = colors[i];
       if (this.isColorAvailable(keyIndex, color)) {
 //        console.log("[SET] " + keyIndex.toString() + " to " + color);
@@ -219,6 +262,7 @@ class Graph {
   }
 
 }
+
 /*
  * Global variables used in drawing and displaying the graph.
  */
@@ -251,6 +295,8 @@ function logGraphInformation() {
      usedColors.add(value);
    }
    console.log("Colors used: " + usedColors.size.toString());
+   console.log("recursiveCallCount: " + recursiveCallCount.toString());
+   recursiveCallCount = 0;
 
    /*
    console.log("\n[Key, color]");
