@@ -104,6 +104,19 @@ class Graph {
     this.edgeColorMap.delete(arr.join('_'));
   }
 
+  degree(vertex) {
+    if (vertex < 0 || vertex >= this.vertexCount) {
+      return 0;
+    }
+    let deg = 0;
+    for (let i = 0; i < this.vertexCount; ++i) {
+      if (i != vertex && this.adjMatrix[vertex][i] == 1) {
+        ++deg;
+      }
+    }
+    return deg;
+  }
+
   incidentVertices(vertex) {
     let arr = [];
     if (vertex < 0 || vertex >= this.vertexCount) {
@@ -186,15 +199,39 @@ class Graph {
     return "#FFFFFF";
   }
 
+  degreePriorityArray() {
+    let arr = [];
+    for (let key of this.vertexColorMap.keys()) {
+      arr.push([this.degree(Number(key)), Number(key)]);
+    }
+
+    arr.sort(function(a, b) {
+      if (a < b) {
+        return 1;
+      }
+      if (a > b) {
+        return -1;
+      }
+      return 0;
+    });
+
+    let priorityArr = [];
+    for (let i = 0; i < arr.length; ++i) {
+      priorityArr.push(arr[i][1]);
+    }
+    return priorityArr;
+  }
+
   assignGreedyColoring() {
     this.assignUncoloredColoring();
-    for (let key of this.vertexColorMap.keys()) {
-      let color = this.nextAvailableColor(Number(key), this.vertexCount);
+    let priorityArr = this.degreePriorityArray();
+    for (let key of priorityArr) {
+      let color = this.nextAvailableColor(key, this.vertexCount);
       if (color == "#FFFFFF") {
         return;
       }
 //      console.log("Set " + key + " to " + color);
-      this.vertexColorMap.set(key, color);
+      this.vertexColorMap.set(key.toString(), color);
     }
   }
 
@@ -802,6 +839,22 @@ function decreaseVertexCount() {
  */
 
 window.onload = function() {
+
+  /*
+   * Graph information table data sorting; all credit goes to Nick Grealy: https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript/49041392#49041392
+   */
+
+  const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+  const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
+    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+  document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+  const table = th.closest('table');
+  Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+      .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+      .forEach(tr => table.appendChild(tr) );})));
+
   /*
    * Randomize onload graph.
    */
