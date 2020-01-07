@@ -11,6 +11,7 @@ Read more about the organization here: [link](https://math.illinois.edu/research
 1) Dynamic graph generation, modification, and coloring
 
 2) Nine base graph options (random, sparse, dense, edgeless, cycle, wheel, min span, connected, and complete)
+   * When the application is loaded, a default graph is randomly generated and has between 3 and 10 vertices
 
 3) Two displays for clarity: cycle-like and wheel-like
 
@@ -36,7 +37,6 @@ Read more about the organization here: [link](https://math.illinois.edu/research
    * If a wheel is generated, the vertex count will be changed to 4 if it is less than 4
 
    * If a min span, connected, or complete graph is generated, the vertex count will be changed to 2 if the count is 1
-
 
 ## Usage
 
