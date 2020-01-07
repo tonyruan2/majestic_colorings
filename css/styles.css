@@ -59,8 +59,8 @@ hr {
 #vertices, #firstVertex, #secondVertex {
   text-align: center;
   padding-left: 14px;
-  border: 2px solid;
-  border-color: blue;
+  border: 4px solid;
+  border-style: inset;
 }
 
 #firstVertex, #secondVertex {
@@ -68,12 +68,27 @@ hr {
   max-width: 90px;
 }
 
+#addVertexButton, #addRandomEdgeButton, #addCustomEdgeButton, #removeCustomEdgeButton {
+  border: 2px solid;
+  border-style: outset;
+}
+
+#addVertexButton {
+  background-color: #EF7FC7;
+}
+
+#addRandomEdgeButton {
+  background-color: #99DFC7;
+}
+
 #addCustomEdgeButton {
+  background-color: #65D6CE;
   width: 27%;
   max-width: 100px;
 }
 
 #removeCustomEdgeButton {
+  background-color: orchid;
   width: 33.9%;
   max-width: 121px;
 }
@@ -101,6 +116,8 @@ hr {
 
 #increaseVertexCountButton {
   background-color: #1ABC9C;
+  border: 2px solid;
+  border-style: outset;
 }
 
 #increaseVertexCountButton:hover {
@@ -109,6 +126,8 @@ hr {
 
 #sameVertexCountButton {
   background-color: #D7DBDD;
+  border: 2px solid;
+  border-style: outset;
 }
 
 #sameVertexCountButton:hover {
@@ -118,6 +137,8 @@ hr {
 
 #decreaseVertexCountButton {
   background-color: #D35400;
+  border: 2px solid;
+  border-style: outset;
 }
 
 #decreaseVertexCountButton:hover {
