@@ -85,6 +85,25 @@ class Graph {
     this.edgeColorMap.set(arr.join('_'), "#000000");
   }
 
+  removeEdge(vertex1, vertex2) {
+    if (vertex1 < 0 || vertex1 >= this.vertexCount) {
+      return;
+    }
+    if (vertex2 < 0 || vertex2 >= this.vertexCount) {
+      return;
+    }
+    if (vertex1 == vertex2) {
+      return;
+    }
+
+    this.adjMatrix[vertex1][vertex2] = 0;
+    this.adjMatrix[vertex2][vertex1] = 0;
+
+    let arr = [vertex1, vertex2];
+    arr.sort();
+    this.edgeColorMap.delete(arr.join('_'));
+  }
+
   incidentVertices(vertex) {
     let arr = [];
     if (vertex < 0 || vertex >= this.vertexCount) {
@@ -390,7 +409,9 @@ function updateGraphText() {
 
   let activeGenerateButtons = document.getElementById("generateOptions").getElementsByClassName("active");
   let generateOption = document.getElementById(activeGenerateButtons[0].id).innerHTML;
-  document.getElementById("InfoBaseGraph").innerHTML = generateOption;
+  let baseVertexCount = document.getElementById("vertices").value;
+  let endStr = (parseInt(baseVertexCount) != 1) ? " vertices" : " vertex";
+  document.getElementById("InfoBaseGraph").innerHTML = generateOption + " with " + baseVertexCount + endStr;
 
   document.getElementById("InfoDisplayOption").innerHTML = isDisplayWheel_ ? "Wheel-like" : "Cycle-like";
 
@@ -483,7 +504,6 @@ function addVertexToGraph() {
   if (globalGraph_.vertexCount < 100) {
     clearCanvas();
     globalGraph_.addVertex();
-    document.getElementById("vertices").value = globalGraph_.vertexCount.toString();
     updateShownGraph();
   }
 }
@@ -515,6 +535,21 @@ function addCustomEdgeToGraph() {
     && secondVertex >= 0 && secondVertex < globalGraph_.vertexCount) {
     if (globalGraph_.adjMatrix[firstVertex][secondVertex] != 1) {
       globalGraph_.addEdge(firstVertex, secondVertex);
+      updateShownGraph();
+      return;
+    }
+  }
+}
+
+function removeCustomEdgeFromGraph() {
+  let firstVertex = document.getElementById("firstVertex").value;
+  let secondVertex = document.getElementById("secondVertex").value;
+  if (firstVertex != secondVertex
+    && firstVertex >= 0 && firstVertex < globalGraph_.vertexCount
+    && secondVertex >= 0 && secondVertex < globalGraph_.vertexCount) {
+    if (globalGraph_.adjMatrix[firstVertex][secondVertex] != 0) {
+      globalGraph_.removeEdge(firstVertex, secondVertex);
+      clearCanvas();
       updateShownGraph();
       return;
     }
@@ -783,7 +818,6 @@ window.onload = function() {
   document.getElementById("vertices").value = vertexCount.toString();
   generateRandomGraph();
 
-
   /*
    * Add active functionality to input groups.
    */
@@ -851,6 +885,7 @@ window.onload = function() {
   document.getElementById("addVertexButton").addEventListener("click", addVertexToGraph);
   document.getElementById("addRandomEdgeButton").addEventListener("click", addRandomEdgeToGraph);
   document.getElementById("addCustomEdgeButton").addEventListener("click", addCustomEdgeToGraph);
+  document.getElementById("removeCustomEdgeButton").addEventListener("click", removeCustomEdgeFromGraph);
 
   document.getElementById("colorUncoloredButton").addEventListener("click", colorGraph);
   document.getElementById("colorEdgeInducedButton").addEventListener("click", colorGraph);

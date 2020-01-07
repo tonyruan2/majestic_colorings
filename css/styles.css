@@ -58,11 +58,25 @@ hr {
 
 #vertices, #firstVertex, #secondVertex {
   text-align: center;
-  padding-left: 12px;
+  padding-left: 14px;
   border: 2px solid;
   border-color: blue;
 }
 
+#firstVertex, #secondVertex {
+  width: 17.5%;
+  max-width: 90px;
+}
+
+#addCustomEdgeButton {
+  width: 27%;
+  max-width: 100px;
+}
+
+#removeCustomEdgeButton {
+  width: 33.9%;
+  max-width: 121px;
+}
 /* w3schools */
 
 .input {
