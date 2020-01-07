@@ -527,28 +527,19 @@ function addRandomEdgeToGraph() {
   }
 }
 
-// check for invalid edge additions to avoid unnecessarily re-updating the shown graph
-function addCustomEdgeToGraph() {
+// check for invalid edge additions/removals to avoid unnecessarily re-updating the shown graph
+function toggleCustomEdgeInGraph() {
   let firstVertex = document.getElementById("firstVertex").value;
   let secondVertex = document.getElementById("secondVertex").value;
   if (firstVertex != secondVertex
     && firstVertex >= 0 && firstVertex < globalGraph_.vertexCount
     && secondVertex >= 0 && secondVertex < globalGraph_.vertexCount) {
-    if (globalGraph_.adjMatrix[firstVertex][secondVertex] != 1) {
+    if (globalGraph_.adjMatrix[firstVertex][secondVertex] == 0) {
       globalGraph_.addEdge(firstVertex, secondVertex);
       updateShownGraph();
       return;
     }
-  }
-}
-
-function removeCustomEdgeFromGraph() {
-  let firstVertex = document.getElementById("firstVertex").value;
-  let secondVertex = document.getElementById("secondVertex").value;
-  if (firstVertex != secondVertex
-    && firstVertex >= 0 && firstVertex < globalGraph_.vertexCount
-    && secondVertex >= 0 && secondVertex < globalGraph_.vertexCount) {
-    if (globalGraph_.adjMatrix[firstVertex][secondVertex] != 0) {
+    else if (globalGraph_.adjMatrix[firstVertex][secondVertex] == 1) {
       globalGraph_.removeEdge(firstVertex, secondVertex);
       clearCanvas();
       updateShownGraph();
@@ -885,8 +876,7 @@ window.onload = function() {
 
   document.getElementById("addVertexButton").addEventListener("click", addVertexToGraph);
   document.getElementById("addRandomEdgeButton").addEventListener("click", addRandomEdgeToGraph);
-  document.getElementById("addCustomEdgeButton").addEventListener("click", addCustomEdgeToGraph);
-  document.getElementById("removeCustomEdgeButton").addEventListener("click", removeCustomEdgeFromGraph);
+  document.getElementById("toggleCustomEdgeButton").addEventListener("click", toggleCustomEdgeInGraph);
 
   document.getElementById("colorUncoloredButton").addEventListener("click", colorGraph);
   document.getElementById("colorEdgeInducedButton").addEventListener("click", colorGraph);
