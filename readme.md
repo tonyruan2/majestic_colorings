@@ -19,7 +19,7 @@ Read more about the organization here: [link](https://math.illinois.edu/research
    * Uncolored: white vertices and black edges
    * Greedy: Welsh-Powell coloring algorithm for fast and efficient coloring
    * Min Colors: Exponential coloring algorithm for guaranteed minimum colors (exponential runtime provisions are implemented; if over 100,000 recursive calls are made while attempting to run the minimum coloring algorithm, greedy coloring will be employed instead)
-   * Edge-Induced: Color edges first and generate appropriate colors for the vertices (*work in progress)
+   * Edge-Induced: Color edges first and generate appropriate colors for the vertices (work in progress)
 
 5) Properties of the displayed graph are shown in both text and table format
 
