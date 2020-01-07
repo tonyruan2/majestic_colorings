@@ -230,7 +230,6 @@ class Graph {
       if (color == "#FFFFFF") {
         return;
       }
-//      console.log("Set " + key + " to " + color);
       this.vertexColorMap.set(key.toString(), color);
     }
   }
@@ -305,7 +304,6 @@ class Graph {
     for (let i = 0; i < colorCount; ++i) {
       let color = colorBank_[i];
       if (this.isColorAvailable(keyIndex, color)) {
-//        console.log("[SET] " + keyIndex.toString() + " to " + color);
         this.vertexColorMap.set(keyIndex.toString(), color);
         if (keyIndex + 1 < this.vertexCount) {
           if(this.assignMinimumColoring_helper(keyIndex + 1, colorCount)) {
@@ -315,7 +313,6 @@ class Graph {
         else {
           return true;
         }
-//        console.log("[RESET] " + keyIndex.toString() + " to " + "UNCOLORED");
         this.vertexColorMap.set(keyIndex.toString(), "#FFFFFF");
       }
     }
@@ -535,7 +532,7 @@ function applyColoringOption() {
 }
 
 /*
- * Functions used to add to the graph.
+ * Functions used to add to and remove from the graph.
  */
 
 function addVertexToGraph() {
@@ -586,7 +583,7 @@ function toggleCustomEdgeInGraph() {
 }
 
 /*
- * Functons that change the graph's display.
+ * Functons that change how the graph is displayed.
  */
 
 function selectCycleDisplay() {
@@ -617,7 +614,7 @@ function shuffle(arr) {
 }
 
 function retrieveVertexCount() {
-  let vertexCount = Number($("#vertices").val());
+  let vertexCount = Number(document.getElementById("vertices").value);
   if (vertexCount < 1) {
     vertexCount = 1;
   }
@@ -712,7 +709,7 @@ function generateWheelGraph() {
   updateShownGraph();
 }
 
-function generateMinimalGraph() {
+function generateMinSpanGraph() {
   clearCanvas();
   let vertexCount = retrieveVertexCount();
 
@@ -841,21 +838,6 @@ function decreaseVertexCount() {
 window.onload = function() {
 
   /*
-   * Graph information table data sorting; all credit goes to Nick Grealy: https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript/49041392#49041392
-   */
-
-  const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
-  const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
-    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
-    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
-
-  document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
-  const table = th.closest('table');
-  Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
-      .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-      .forEach(tr => table.appendChild(tr) );})));
-
-  /*
    * Randomize onload graph.
    */
 
@@ -870,6 +852,21 @@ window.onload = function() {
   addActiveFunctionality("generateOptions");
   addActiveFunctionality("displayOptions");
   addActiveFunctionality("colorOptions");
+
+  /*
+   * Add functionality to table sorting buttons; all credit goes to Nick Grealy: https://stackoverflow.com/questions/14267781/sorting-html-table-with-javascript/49041392#49041392
+   */
+
+  const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+  const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
+    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+  document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+  const table = th.closest('table');
+  Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+      .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+      .forEach(tr => table.appendChild(tr) );})));
 
   /*
    * Add limits to first and second vertex for custom edge input.
@@ -920,7 +917,7 @@ window.onload = function() {
   document.getElementById("generateCycleButton").addEventListener("click", generateCycleGraph);
   document.getElementById("generateWheelButton").addEventListener("click", generateWheelGraph);
 
-  document.getElementById("generateMinSpanButton").addEventListener("click", generateMinimalGraph);
+  document.getElementById("generateMinSpanButton").addEventListener("click", generateMinSpanGraph);
   document.getElementById("generateConnectedButton").addEventListener("click", generateConnectedGraph);
   document.getElementById("generateCompleteButton").addEventListener("click", generateCompleteGraph);
 
