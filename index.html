@@ -14,99 +14,107 @@
 
 <body>
   <div class="container">
-    <header>
-      <h1 class="title text-center">Majestic Colorings of
-        <span style="color:#ff0000;">G</span><span style="color:#ff8f00;">r</span><span style="color:#00ffff;">a</span><span style="color:#0080ff;">p</span><span style="color:#0000ff;">h</span><span style="color:#8b00ff;">s</span></h1>
-    </header>
 
-  <div class="row d-flex justify-content-center">
+    <div id="topPanel">
+      <header>
+        <h1 class="title text-center">Majestic Colorings of
+          <span style="color:#ff0000;">G</span><span style="color:#ff8f00;">r</span><span style="color:#00ffff;">a</span><span style="color:#0080ff;">p</span><span style="color:#0000ff;">h</span><span style="color:#8b00ff;">s</span></h1>
+      </header>
 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-7">
-      <canvas id="graphCanvas" width="600" height="600"></canvas>
-    </div>
+      <div class="row d-flex justify-content-center">
 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-5">
-
-      <div id="userInput">
-        <h6>Choose the number of vertices</h6>
-        <input type="number" class="input" id="vertices" step="1" min="1" max="100" value="10">
-        <button type="button" class="input" id="increaseVertexCountButton">++</button>
-        <button type="button" class="input" id="sameVertexCountButton">==</button>
-        <button type="button" class="input" id="decreaseVertexCountButton">--</button>
-        <br>
-
-        <hr>
-
-        <div id="generateOptions">
-          <h6>Generate a base graph</h6>
-          <button type="button" class="input active" id="generateRandomButton">Random</button>
-          <button type="button" class="input" id="generateSparseButton">Sparse</button>
-          <button type="button" class="input" id="generateDenseButton">Dense</button>
-          <br>
-          <button type="button" class="input" id="generateEdgelessButton">Edgeless</button>
-          <button type="button" class="input" id="generateCycleButton">Cycle</button>
-          <button type="button" class="input" id="generateWheelButton">Wheel</button>
-          <br>
-
-          <button type="button" class="input" id="generateMinSpanButton">Min Span</button>
-          <button type="button" class="input" id="generateConnectedButton">Connected</button>
-          <button type="button" class="input" id="generateCompleteButton">Complete</button>
-          <br>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-7">
+          <canvas id="graphCanvas" width="600" height="600"></canvas>
         </div>
 
-        <div id="displayOptions">
-          <h6>Choose a display</h6>
-          <button type="button" class="input active" id="selectCycleLikeButton">Cycle-like</button>
-          <button type="button" class="input" id="selectWheelLikeButton">Wheel-like</button>
-          <br>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-5">
+
+          <div id="userInput">
+            <h6>Choose the number of vertices</h6>
+            <input type="number" class="input" id="vertices" step="1" min="1" max="100" value="10">
+            <button type="button" class="input" id="increaseVertexCountButton">++</button>
+            <button type="button" class="input" id="sameVertexCountButton">==</button>
+            <button type="button" class="input" id="decreaseVertexCountButton">--</button>
+            <br>
+
+            <div id="generateOptions">
+              <h6>Generate a base graph</h6>
+              <button type="button" class="input active" id="generateRandomButton">Random</button>
+              <button type="button" class="input" id="generateSparseButton">Sparse</button>
+              <button type="button" class="input" id="generateDenseButton">Dense</button>
+              <br>
+              <button type="button" class="input" id="generateEdgelessButton">Edgeless</button>
+              <button type="button" class="input" id="generateCycleButton">Cycle</button>
+              <button type="button" class="input" id="generateWheelButton">Wheel</button>
+              <br>
+
+              <button type="button" class="input" id="generateMinSpanButton">Min Span</button>
+              <button type="button" class="input" id="generateConnectedButton">Connected</button>
+              <button type="button" class="input" id="generateCompleteButton">Complete</button>
+              <br>
+            </div>
+
+            <div id="displayOptions">
+              <h6>Choose a display</h6>
+              <button type="button" class="input active" id="selectCycleLikeButton">Cycle-like</button>
+              <button type="button" class="input" id="selectWheelLikeButton">Wheel-like</button>
+              <br>
+            </div>
+
+            <div id="addOptions">
+              <h6>Add to generated graph</h6>
+              <button type="button" class="input" id="addVertexButton">Vertex</button>
+              <button type="button" class="input" id="addRandomEdgeButton">Random Edge</button>
+              <br>
+              <input type="number" class="input" id="firstVertex" step="1" min="0" max="99" value="0">
+              <input type="number" class="input" id="secondVertex" step="1" min="0" max="99" value="0">
+              <button type="button" class="input" id="addCustomEdgeButton">Custom Edge</button>
+              <br>
+            </div>
+
+            <div id="colorOptions">
+              <h6>Color the graph</h6>
+              <button type="button" class="input active" id="colorUncoloredButton">Uncolored</button>
+              <button type="button" class="input" id="colorEdgeInducedButton">Edge Induced [wip]</button>
+              <br>
+              <button type="button" class="input" id="colorGreedyButton">Greedy</button>
+              <button type="button" class="input" id="colorMinimumButton">Min Colors</button>
+            </div>
+          </div>
         </div>
 
-        <div id="addOptions">
-          <h6>Add to generated graph</h6>
-          <button type="button" class="input" id="addVertexButton">Vertex</button>
-          <button type="button" class="input" id="addEdgeButton">Edge</button>
-          <br>
-        </div>
-
-        <div id="colorOptions">
-          <h6>Color the graph</h6>
-          <button type="button" class="input active" id="colorUncoloredButton">Uncolored</button>
-          <button type="button" class="input" id="colorEdgeInducedButton">Edge Induced [wip]</button>
-          <br>
-          <button type="button" class="input" id="colorGreedyButton">Greedy [0 to n-1]</button>
-          <button type="button" class="input" id="colorMinimumButton">Min Colors</button>
-        </div>
       </div>
     </div>
 
+  <div id="bottomPanel">
+    <hr>
+    <div id="graphText">
+      <h2>Graph Information</h2>
+      <div>Vertex count: <span id="InfoVertexCount"></span> </div>
+      <div>Edge count: <span id="InfoEdgeCount"></span> </div>
+      <div>Base graph: <span id="InfoBaseGraph"></span> </div>
+      <div>Display option: <span id="InfoDisplayOption"></span> </div>
+      <div>Coloring scheme: <span id="InfoColorScheme"></span> </div>
+      <div>Number of colors: <span id="InfoColorsUsed"></span> </div>
+    </div>
+    <hr>
+
+    <table id="graphInformation" class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Vertex</th>
+          <th scope="col">Color</th>
+          <th scope="col">Degree</th>
+          <th scope="col">Neighbors</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+    </div>
   </div>
 
-  <hr>
-
-  <div id="graphText">
-    <h2>Graph Information</h2>
-    <div>Vertex count: <span id="InfoVertexCount"></span> </div>
-    <div>Edge count: <span id="InfoEdgeCount"></span> </div>
-    <div>Base graph: <span id="InfoBaseGraph"></span> </div>
-    <div>Display option: <span id="InfoDisplayOption"></span> </div>
-    <div>Coloring scheme: <span id="InfoColorScheme"></span> </div>
-    <div>Number of colors: <span id="InfoColorsUsed"></span> </div>
-  </div>
-
-  <table id="graphInformation" class="table">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Vertex</th>
-        <th scope="col">Color</th>
-        <th scope="col">Degree</th>
-        <th scope="col">Neighbors</th>
-      </tr>
-    </thead>
-    <tbody>
-
-    </tbody>
-  </table>
-  </div>
 </body>
 
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>

@@ -7,6 +7,21 @@ body {
   margin-bottom: 50px;
 }
 
+#topPanel {
+  padding: 30px;
+  border-color: #FFFFFF;
+  background-color: #32CD32;
+  border: 3px solid;
+  border-radius: 20px;
+  margin-bottom: 25px;
+}
+
+hr {
+  height: 0px;
+  border: none;
+  border-top: 4px solid black;
+}
+
 .title {
   font-size: 47px;
   margin-left: auto;
@@ -42,7 +57,7 @@ body {
   border-radius: 5px;
 }
 
-#vertices {
+#vertices, #firstVertex, #secondVertex {
   text-align: center;
   padding-left: 12px;
   border: 2px solid;
@@ -102,7 +117,7 @@ body {
 }
 
 #selectCycleLikeButton, #selectWheelLikeButton, #addVertexButton,
-#addEdgeButton, #colorUncoloredButton, #colorEdgeInducedButton,
+#addRandomEdgeButton, #colorUncoloredButton, #colorEdgeInducedButton,
 #colorGreedyButton, #colorMinimumButton {
   width: 49.1%;
   max-width: 175px;

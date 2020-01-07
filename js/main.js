@@ -306,7 +306,7 @@ function logGraphInformation() {
 }
 
 /*
- * Functions used to draw the graph and update the displayed graph.
+ * Functions used to draw and update the displayed graph and table.
  */
 
 function dividePoints(numPoints, width, height, margin_, wheel = isDisplayWheel_) {
@@ -382,16 +382,11 @@ function drawGraph() {
   }
 }
 
-function clearDataTable() {
-  let rowCount = table_.rows.length;
-  for (let i = 1; i < rowCount; ++i) {
-    table_.deleteRow(1);
-  }
-}
-
 function updateGraphText() {
   document.getElementById("InfoVertexCount").innerHTML = globalGraph_.vertexCount;
-  document.getElementById("InfoEdgeCount").innerHTML = globalGraph_.edgeColorMap.size;
+
+  let maximumEdges = globalGraph_.vertexCount * (globalGraph_.vertexCount - 1) / 2;
+  document.getElementById("InfoEdgeCount").innerHTML = globalGraph_.edgeColorMap.size.toString() + " out of " + maximumEdges.toString();
 
   let activeGenerateButtons = document.getElementById("generateOptions").getElementsByClassName("active");
   let generateOption = document.getElementById(activeGenerateButtons[0].id).innerHTML;
@@ -408,6 +403,13 @@ function updateGraphText() {
     usedColors.add(value);
   }
   document.getElementById("InfoColorsUsed").innerHTML = usedColors.size;
+}
+
+function clearDataTable() {
+  let rowCount = table_.rows.length;
+  for (let i = 1; i < rowCount; ++i) {
+    table_.deleteRow(1);
+  }
 }
 
 function generateDataTable() {
@@ -486,7 +488,7 @@ function addVertexToGraph() {
   }
 }
 
-function addEdgeToGraph() {
+function addRandomEdgeToGraph() {
   let maximumEdges = globalGraph_.vertexCount * (globalGraph_.vertexCount - 1) / 2;
   if (globalGraph_.edgeColorMap.size < maximumEdges) {
       clearCanvas();
@@ -504,6 +506,20 @@ function addEdgeToGraph() {
   }
 }
 
+// check for invalid edge additions to avoid unnecessarily re-updating the shown graph
+function addCustomEdgeToGraph() {
+  let firstVertex = document.getElementById("firstVertex").value;
+  let secondVertex = document.getElementById("secondVertex").value;
+  if (firstVertex != secondVertex
+    && firstVertex >= 0 && firstVertex < globalGraph_.vertexCount
+    && secondVertex >= 0 && secondVertex < globalGraph_.vertexCount) {
+    if (globalGraph_.adjMatrix[firstVertex][secondVertex] != 1) {
+      globalGraph_.addEdge(firstVertex, secondVertex);
+      updateShownGraph();
+      return;
+    }
+  }
+}
 
 /*
  * Functons that change the graph's display.
@@ -777,10 +793,34 @@ window.onload = function() {
   addActiveFunctionality("colorOptions");
 
   /*
+   * Add limits to first and second vertex for custom edge input.
+   */
+
+  document.getElementById("firstVertex").addEventListener("change", function() {
+    if (this.value < 0) {
+      this.value = 0;
+    }
+    else if (this.value >= globalGraph_.vertexCount) {
+      this.value = globalGraph_.vertexCount - 1;
+    }
+  })
+
+  document.getElementById("secondVertex").addEventListener("change", function() {
+    if (this.value < 0) {
+      this.value = 0;
+    }
+    else if (this.value >= globalGraph_.vertexCount) {
+      this.value = globalGraph_.vertexCount - 1;
+    }
+  })
+
+  /*
    * Add dynamic graph generation with changes to the number of vertices.
    */
 
   document.getElementById("vertices").addEventListener("change", function() {
+    document.getElementById("firstVertex").value = 0;
+    document.getElementById("secondVertex").value = 0;
     let activeButtons = document.getElementById("generateOptions").getElementsByClassName("active");
     document.getElementById(activeButtons[0].id).click();
   })
@@ -809,7 +849,8 @@ window.onload = function() {
   document.getElementById("selectWheelLikeButton").addEventListener("click", selectWheelDisplay);
 
   document.getElementById("addVertexButton").addEventListener("click", addVertexToGraph);
-  document.getElementById("addEdgeButton").addEventListener("click", addEdgeToGraph);
+  document.getElementById("addRandomEdgeButton").addEventListener("click", addRandomEdgeToGraph);
+  document.getElementById("addCustomEdgeButton").addEventListener("click", addCustomEdgeToGraph);
 
   document.getElementById("colorUncoloredButton").addEventListener("click", colorGraph);
   document.getElementById("colorEdgeInducedButton").addEventListener("click", colorGraph);
