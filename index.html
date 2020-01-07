@@ -15,9 +15,8 @@
 <body>
   <div class="container">
     <header>
-      <h1 class="title text-center">Majestic
-        <span style="color:#ff0000;">C</span><span style="color:#ff7f00;">o</span><span style="color:#ffbf00;">l</span><span style="color:#ffff00;">o</span><span style="color:#00ff00;">r</span><span style="color:#00ffff;">i</span><span style="color:#0080ff;">n</span><span style="color:#0000ff;">g</span><span style="color:#8b00ff;">s</span>
-         of Graphs</h1>
+      <h1 class="title text-center">Majestic Colorings of
+        <span style="color:#ff0000;">G</span><span style="color:#ff8f00;">r</span><span style="color:#00ffff;">a</span><span style="color:#0080ff;">p</span><span style="color:#0000ff;">h</span><span style="color:#8b00ff;">s</span></h1>
     </header>
 
   <div class="row d-flex justify-content-center">
@@ -49,7 +48,7 @@
           <button type="button" class="input" id="generateWheelButton">Wheel</button>
           <br>
 
-          <button type="button" class="input" id="generateMinimalButton">Min Span</button>
+          <button type="button" class="input" id="generateMinSpanButton">Min Span</button>
           <button type="button" class="input" id="generateConnectedButton">Connected</button>
           <button type="button" class="input" id="generateCompleteButton">Complete</button>
           <br>
@@ -83,37 +82,30 @@
   </div>
 
   <hr>
-<!---
-  <table id="graphInformation" class="container table table-hover table-responsive">
+
+  <div id="graphText">
+    <h2>Graph Information</h2>
+    <div>Vertex count: <span id="InfoVertexCount"></span> </div>
+    <div>Edge count: <span id="InfoEdgeCount"></span> </div>
+    <div>Base graph: <span id="InfoBaseGraph"></span> </div>
+    <div>Display option: <span id="InfoDisplayOption"></span> </div>
+    <div>Coloring scheme: <span id="InfoColorScheme"></span> </div>
+    <div>Number of colors: <span id="InfoColorsUsed"></span> </div>
+  </div>
+
+  <table id="graphInformation" class="table">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">Vertex #</th>
+        <th scope="col">Vertex</th>
+        <th scope="col">Color</th>
         <th scope="col">Degree</th>
         <th scope="col">Neighbors</th>
-        <th scope="col">Color</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>?</td>
-        <td>?</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
+
     </tbody>
   </table>
---->
   </div>
 </body>
 

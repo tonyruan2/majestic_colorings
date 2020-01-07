@@ -108,6 +108,10 @@ body {
   max-width: 175px;
 }
 
+#graphText {
+  text-align: center;
+}
+
 #graphInformation {
   margin-top: 30px;
   margin-bottom: 30px;
