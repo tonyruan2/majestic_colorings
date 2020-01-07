@@ -436,6 +436,7 @@ function clearDataTable() {
 function generateDataTable() {
   for (let i = 0; i < globalGraph_.vertexCount; ++i) {
     let row = table_.insertRow(i + 1);
+    row.className += " item";
     let vertexCell = row.insertCell(0);
     let colorCell = row.insertCell(1);
     let degreeCell = row.insertCell(2);

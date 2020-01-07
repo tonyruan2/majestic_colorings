@@ -92,7 +92,12 @@ hr {
   width: 33.9%;
   max-width: 121px;
 }
+
 /* w3schools */
+
+.columnLabel {
+  cursor: pointer;
+}
 
 .input {
   -webkit-transition-duration: 0.4s; /* Safari */

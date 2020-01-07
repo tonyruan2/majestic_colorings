@@ -101,13 +101,13 @@
     </div>
     <hr>
 
-    <table id="graphInformation" class="table">
+    <table id="graphInformation" class="table table-sm">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">Vertex</th>
-          <th scope="col">Color</th>
-          <th scope="col">Degree</th>
-          <th scope="col">Neighbors</th>
+          <th class="columnLabel" onclick="w3.sortHTML('#graphInformation','.item', 'td:nth-child(1)')" scope="col">Vertex <i class="fa fa-sort"></i></th>
+          <th class="columnLabel" onclick="w3.sortHTML('#graphInformation','.item', 'td:nth-child(2)')" scope="col">Color <i class="fa fa-sort"></i></th>
+          <th class="columnLabel" onclick="w3.sortHTML('#graphInformation','.item', 'td:nth-child(3)')" scope="col">Degree <i class="fa fa-sort"></i></th>
+          <th class="columnLabel" onclick="w3.sortHTML('#graphInformation','.item', 'td:nth-child(4)')" scope="col">Neighbors <i class="fa fa-sort"></i></th>
         </tr>
       </thead>
       <tbody>
@@ -119,8 +119,9 @@
 
 </body>
 
+<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+<script src="https://www.w3schools.com/lib/w3.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
-
 <script type="application/javascript" src="js/main.js"></script>
 
 </html>
