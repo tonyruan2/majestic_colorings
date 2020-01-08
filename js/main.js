@@ -332,12 +332,15 @@ const colorBank_ = ["#808080", "#FF0000", "#FFFF00", "#0000FF", "#00FF00", "#FF0
 
 const canvas_ = document.getElementById("graphCanvas");
 const context_ = canvas_.getContext("2d");
+const clickmap_ = document.getElementById("clickmap");
 const canvasWidth_ = 600;
 const canvasHeight_ = 600;
 const margin_ = 50;
 let isDisplayWheel_ = false;
 let globalGraph_ = new Graph();
 let table_ = document.getElementById("graphInformation");
+let firstSelectedVertex = -1;
+let secondSelectedVertex = -1;
 
 /*
  * Function used to print graph information to the console.
@@ -356,6 +359,56 @@ function logGraphInformation() {
    console.log("Colors used: " + usedColors.size.toString());
    console.log("recursiveCallCount_: " + recursiveCallCount_.toString());
    recursiveCallCount_ = 0;
+}
+
+function selectVertex(vertex) {
+  if (firstSelectedVertex == vertex) {
+    firstSelectedVertex = -1;
+    document.getElementById("selectedVertexText").innerHTML =
+      "Selected vertex: None";
+  }
+  else if (firstSelectedVertex == -1) {
+    document.getElementById("selectedVertexText").innerHTML =
+      "Selected vertex: " + vertex.toString();
+    firstSelectedVertex = vertex;
+  }
+  else if (secondSelectedVertex == -1) {
+    document.getElementById("selectedVertexText").innerHTML =
+      "Selected vertex: None";
+
+    secondSelectedVertex = vertex;
+    toggleCustomEdgeInGraph(false);
+    firstSelectedVertex = -1;
+    secondSelectedVertex = -1;
+  }
+}
+
+/*
+ * Functions to support edge adding via clicking two vertices on the canvas.
+ */
+
+function addClickableVertex(vertex, centerX, centerY, radius) {
+  let area = document.createElement("AREA");
+  area.id = "area" + vertex.toString();
+  area.shape = "circle";
+  area.coords = centerX.toString() + "," + centerY.toString() + "," + radius.toString();
+  clickmap_.appendChild(area);
+
+  document.getElementById(area.id).addEventListener("click", function() {
+    selectVertex(vertex);
+  });
+}
+
+function removeClickableVertices() {
+  let areaCount = clickmap_.areas.length;
+  for (let i = 0; i < areaCount; ++i) {
+    clickmap_.removeChild(clickmap_.areas[0]);
+  }
+
+  document.getElementById("selectedVertexText").innerHTML =
+    "Selected vertex: None";
+  firstSelectedVertex = -1;
+  secondSelectedVertex = -1;
 }
 
 /*
@@ -392,8 +445,10 @@ function dividePoints(numPoints, width, height, margin_, wheel = isDisplayWheel_
 }
 
 function drawVertex(vertex, centerX, centerY, radius, color="#FFFFFF") {
+  let scalingRatio = 1 - (globalGraph_.vertexCount / 175);
+  addClickableVertex(vertex, centerX, centerY, scalingRatio * radius);
   context_.beginPath();
-  context_.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+  context_.arc(centerX, centerY, scalingRatio * radius, 0, 2 * Math.PI, false);
   context_.fillStyle = color;
   context_.fill();
   context_.lineWidth = 1;
@@ -416,6 +471,7 @@ function drawEdge(beginX, beginY, endX, endY, color="#000000") {
 }
 
 function drawGraph() {
+  removeClickableVertices();
   applyColoringOption();
   let pointPositions = dividePoints(globalGraph_.vertexCount, canvasWidth_, canvasHeight_, margin_);
 
@@ -562,9 +618,17 @@ function addRandomEdgeToGraph() {
 }
 
 // check for invalid edge additions/removals to avoid unnecessarily re-updating the shown graph
-function toggleCustomEdgeInGraph() {
-  let firstVertex = document.getElementById("firstVertex").value;
-  let secondVertex = document.getElementById("secondVertex").value;
+function toggleCustomEdgeInGraph(addThroughInput = true) {
+  let firstVertex = 0;
+  let secondVertex = 0;
+  if (addThroughInput) {
+    firstVertex = document.getElementById("firstVertex").value;
+    secondVertex = document.getElementById("secondVertex").value;
+  }
+  else {
+    firstVertex = Number(firstSelectedVertex);
+    secondVertex = Number(secondSelectedVertex);
+  }
   if (firstVertex != secondVertex
     && firstVertex >= 0 && firstVertex < globalGraph_.vertexCount
     && secondVertex >= 0 && secondVertex < globalGraph_.vertexCount) {

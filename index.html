@@ -25,11 +25,17 @@
 
       <div class="row d-flex justify-content-center">
 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-7">
-          <canvas id="graphCanvas" width="600" height="600"></canvas>
+        <div class="col-xs-2 col-sm-2 col-md-3 col-lg-6 col-xl-7">
+
+          <div id="canvasContainer" width="600" height="600">
+            <canvas id="graphCanvas" width="600" height="600"></canvas>
+            <img id="canvasImg" width="600" height="600" usemap="#clickmap">
+            <map id="clickmap" name="clickmap">
+            </map>
+          </div>
         </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-5">
+        <div class="col-xs-10 col-sm-10 col-md-9 col-lg-6 col-xl-5">
 
           <div id="userInput">
             <h6>Choose the number of vertices {base graph only}</h6>
@@ -87,6 +93,8 @@
         </div>
       </div>
 
+      <div>[Maximized Browser] Click on any two vertices to toggle an edge.</div>
+      <div id="selectedVertexText">Selected vertex: None</div>
       <div id="graphText">
         <div><strong>[ </strong>Vertex count: <span id="InfoVertexCount"></span><strong> ] [ </strong>Edge count: <span id="InfoEdgeCount"></span><strong> ]</strong></div>
         <div><strong>[ </strong>Base graph: <span id="InfoBaseGraph"></span><strong> ] [ </strong>Display option: <span id="InfoDisplayOption"></span><strong> ]</strong></div>
