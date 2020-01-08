@@ -1,5 +1,7 @@
 # Majestic Colorings of Graphs
 
+[Web Application](https://tonyruan2.github.io/majestic_colorings/)
+
 This web application was inspired by the Spring 2020 Illinois Geometry Lab (IGL) Research Project titled "Majestic Colorings of Graphs".
 
 Read more about the research project here: [link](https://math.illinois.edu/research/igl/projects/spring/2020/majestic-colorings-graphs)
