@@ -18,6 +18,9 @@ Read more about the organization here: [link](https://math.illinois.edu/research
 
 3) Two displays for clarity: cycle-like and wheel-like
 
+   * Cycle-like provides an optimal view of all edges
+   * Wheel-like provides an optimal view of wheel graphs but can hide some edges
+
 4) Four coloring options
 
    * Uncolored: white vertices and black edges
@@ -28,7 +31,7 @@ Read more about the organization here: [link](https://math.illinois.edu/research
 5) Easy edge toggling through clicking vertices
 
    * On most maximized browser displays, edges between vertices can be toggled by clicking each of the vertices on the shown graph
-   * The reason for the maximized display requirement is that the generated HTML DOM Object overlay on the canvas does not scale accordingly with browser shrinking
+   * The reason for the maximized display requirement is that the generated HTML DOM Object overlay onto the canvas does not scale accordingly with window reduction
 
 6) Properties of the displayed graph are shown in both text and table format
 
@@ -37,7 +40,7 @@ Read more about the organization here: [link](https://math.illinois.edu/research
 7) Value checking
 
    * The number of vertices inputted will be fixed to be between 1 and 100
-   * The vertex inputs for custom edge toggles are fixed to between 0 and the greatest vertex in the graph
+   * The vertex inputs for custom edge toggles are fixed to be between 0 and the greatest vertex in the graph
    * If a cycle is generated, the vertex count will be changed to 3 if it is less than 3
    * If a wheel is generated, the vertex count will be changed to 4 if it is less than 4
    * If a min span, connected, or complete graph is generated, the vertex count will be changed to 2 if the count is 1

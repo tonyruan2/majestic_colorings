@@ -365,16 +365,16 @@ function selectVertex(vertex) {
   if (firstSelectedVertex == vertex) {
     firstSelectedVertex = -1;
     document.getElementById("selectedVertexText").innerHTML =
-      "Selected vertex: None";
+      "None";
   }
   else if (firstSelectedVertex == -1) {
     document.getElementById("selectedVertexText").innerHTML =
-      "Selected vertex: " + vertex.toString();
+      vertex.toString();
     firstSelectedVertex = vertex;
   }
   else if (secondSelectedVertex == -1) {
     document.getElementById("selectedVertexText").innerHTML =
-      "Selected vertex: None";
+      "None";
 
     secondSelectedVertex = vertex;
     toggleCustomEdgeInGraph(false);
@@ -406,7 +406,7 @@ function removeClickableVertices() {
   }
 
   document.getElementById("selectedVertexText").innerHTML =
-    "Selected vertex: None";
+    "None";
   firstSelectedVertex = -1;
   secondSelectedVertex = -1;
 }
