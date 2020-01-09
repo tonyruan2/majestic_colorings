@@ -361,6 +361,10 @@ function logGraphInformation() {
    recursiveCallCount_ = 0;
 }
 
+/*
+ * Functions to support edge adding via clicking two vertices on the canvas.
+ */
+
 function selectVertex(vertex) {
   if (firstSelectedVertex == vertex) {
     firstSelectedVertex = -1;
@@ -382,10 +386,6 @@ function selectVertex(vertex) {
     secondSelectedVertex = -1;
   }
 }
-
-/*
- * Functions to support edge adding via clicking two vertices on the canvas.
- */
 
 function addClickableVertex(vertex, centerX, centerY, radius) {
   let area = document.createElement("AREA");

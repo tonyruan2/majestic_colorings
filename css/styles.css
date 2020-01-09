@@ -15,12 +15,6 @@ body {
   margin-bottom: 25px;
 }
 
-hr {
-  height: 0px;
-  border: none;
-  border-top: 4px solid black;
-}
-
 .title {
   font-size: 47px;
   margin-left: auto;
